@@ -1,0 +1,257 @@
+﻿@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="p-6 space-y-8">
+    <div id="dashboardContent">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
+            <div class="stat-card bg-gradient-purple">
+                <p class="text-gray-200 mb-1">Total Students</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalStudents <i class="fas fa-user text-purple-300 text-sm ml-1"></i>
+                </p>
+            </div>
+            <div class="stat-card bg-gradient-green">
+                <p class="text-gray-200 mb-1">Total Teachers</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalTeachers <i class="fas fa-chalkboard-teacher text-green-300 text-sm ml-1"></i>
+                </p>
+            </div>
+            <div class="stat-card bg-gradient-blue">
+                <p class="text-gray-200 mb-1">Total Departments</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalDepartments <i class="fas fa-building text-blue-300 text-sm ml-1"></i>
+                </p>
+            </div>
+            <div class="stat-card bg-gradient-yellow">
+                <p class="text-gray-200 mb-1">Total Courses</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalCourses <i class="fas fa-book text-yellow-300 text-sm ml-1"></i>
+                </p>
+            </div>
+            <div class="stat-card bg-gradient-red">
+                <p class="text-gray-200 mb-1">Total Roles</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalRoles <i class="fas fa-user-shield text-red-300 text-sm ml-1"></i>
+                </p>
+            </div>
+            <div class="stat-card bg-gradient-indigo">
+                <p class="text-gray-200 mb-1">Assigned Courses</p>
+                <p class="text-3xl font-bold">
+                    @Model.TotalAssignedCourses <i class="fas fa-chalkboard text-indigo-300 text-sm ml-1"></i>
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
+            <h3 class="text-xl font-semibold mb-4 text-white">Overview Chart</h3>
+            <div id="overviewChart" style="height: 300px;"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">Recent Student Activities</h3>
+            @if (Model.RecentStudentActivities.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var student in Model.RecentStudentActivities)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg transition-all duration-300 hover:bg-gray-600">
+                            <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="User" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    <span class="text-blue-400">@student.Email</span> registered.
+                                </p>
+                                <p class="text-sm text-gray-400">@student.EnrollmentDate?.ToString("dddd, MMMM dd, yyyy h:mm tt")</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent student activities available.</p>
+            }
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">Recent Teacher Activities</h3>
+            @if (Model.RecentTeacherActivities.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var teacher in Model.RecentTeacherActivities)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg hover:bg-gray-600">
+                            <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="Teacher" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    Teacher: <span class="text-green-400">@teacher.FirstName @teacher.LastName</span>
+                                </p>
+                                <p class="text-sm text-gray-400">Specialization: @teacher.Specialization</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent teacher activities available.</p>
+            }
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">Recent Department Activities</h3>
+            @if (Model.RecentDepartmentActivities.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var dept in Model.RecentDepartmentActivities)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg hover:bg-gray-600">
+                            <img src="https://cdn-icons-png.flaticon.com/512/174/174726.png" alt="Department" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    Department: <span class="text-yellow-400">@dept.DepartmentName</span>
+                                </p>
+                                <p class="text-sm text-gray-400">Created At: @dept.CreatedAt.ToString("dddd, MMMM dd, yyyy h:mm tt")</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent department activities available.</p>
+            }
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">Recent Course Activities</h3>
+            @if (Model.RecentCourseActivities.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var course in Model.RecentCourseActivities)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg transition-all duration-300 hover:bg-gray-600">
+                            <img src="https://www.freeiconspng.com/thumbs/courses-icon/courses-icon-7.png" alt="Course Icon" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    Course: <span class="text-green-400">@course.Title</span> created.
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    Start Date: @course.StartDate.ToString("dddd, MMMM dd, yyyy h:mm tt")
+                                    - End Date: @course.EndDate.ToString("dddd, MMMM dd, yyyy h:mm tt")
+                                </p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent course activities available.</p>
+            }
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">User Course Assignments</h3>
+            @if (Model.RecentAssingToCourseStudents.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var assignment in Model.RecentAssingToCourseStudents)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg transition-all duration-300 hover:bg-gray-600">
+                            <img src="https://cdn-icons-png.flaticon.com/512/13632/13632954.png" alt="User Icon" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    <span class="text-blue-400">@assignment.User.Email</span>
+                                    has been assigned to the course <span class="text-green-400">@assignment.Course.Title</span>.
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    Assignment Date: @assignment.CreatedAt.ToString("dddd, MMMM dd, yyyy h:mm tt")
+                                </p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent course assignments available at the moment. Check back later for updates.</p>
+            }
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mt-8">
+            <h3 class="text-xl font-semibold mb-4">Recent Role Assignments</h3>
+            @if (Model.RecentRoleAssignments.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var assignment in Model.RecentRoleAssignments)
+                    {
+                        <li class="flex items-center bg-gray-700 p-4 rounded-lg transition-all duration-300 hover:bg-gray-600">
+                            <img src="https://www.veryicon.com/download/png/education-technology/data-exchange/role-management-13?s=256" alt="User Icon" class="rounded-full w-12 h-12 mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-200">
+                                    User: <span class="text-blue-400">@assignment.UserName</span>
+                                    - Role: <span class="text-green-400">@assignment.RoleName</span>
+                                </p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-400">No recent role assignments available.</p>
+            }
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    var options = {
+        series: [{
+            name: 'Count',
+            data: [
+                @Model.TotalStudents, 
+                @Model.TotalTeachers,
+                @Model.TotalDepartments,
+                @Model.TotalCourses,
+                @Model.TotalRoles,
+                @Model.TotalAssignedCourses
+            ]
+        }],
+        chart: {
+            type: 'bar',
+            height: 300,
+            toolbar: { show: false }
+        },
+        xaxis: {
+            categories: [
+                'Students', 
+                'Teachers',
+                'Depts',
+                'Courses', 
+                'Roles',
+                'Assigned'
+            ]
+        },
+        colors: ['#4F46E5'],
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                horizontal: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        tooltip: {
+            theme: 'dark'
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#overviewChart"), options);
+    chart.render();
+</script>

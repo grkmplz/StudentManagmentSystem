@@ -1,0 +1,44 @@
+﻿@model StudentCoursesManagement.Application.ViewModels.StudentCoursesViewModels.AssignCourseViewModel
+
+@{
+    ViewData["Title"] = "Ders Atama";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="p-6 space-y-8">
+    <h1 class="text-3xl font-bold text-white mb-4">@Model.StudentDetailsViewModel.FirstName @Model.StudentDetailsViewModel.LastName</h1>
+
+    <form asp-action="AssignCourse" method="post">
+        <input type="hidden" asp-for="StudentDetailsViewModel.StudentId" />
+
+        <div class="mb-4">
+            <div class="bg-gray-800 rounded-lg p-4" style="min-height: 500px; overflow-y: auto;">
+                @if (Model.AvailableCourses != null && Model.AvailableCourses.Any())
+                {
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach (var course in Model.AvailableCourses)
+                        {
+                            <div class="rounded-lg p-4 relative shadow-md flex flex-col items-center justify-center" style="background-color: #2d3960;">
+                                <label class="text-white font-semibold text-lg">@course.Title</label>
+                                <p class="text-gray-400 text-sm mt-2 block">Start Date : @course.StartDate.ToShortDateString()</p>
+                                <p class="text-gray-400 text-sm mt-2 block">End Date : @course.EndDate.ToShortDateString()</p>
+                                <input type="checkbox" name="SelectedCourseIds" value="@course.CourseId" class="absolute top-2 right-2 w-5 h-5 accent-blue-500 cursor-pointer"
+                                @(Model.SelectedCourseIds.Contains(course.CourseId) ? "checked" : "") />
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-gray-500 text-sm">There are no courses available.</p>
+                }
+            </div>
+
+            <span class="text-gray-500 text-sm mt-2 block">To select multiple courses, click on the checkboxes.</span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <a href="@Url.Action("Index", "Students")" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Previous Page</a>
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">✓ Save Process</button>
+        </div>
+    </form>
+</div>

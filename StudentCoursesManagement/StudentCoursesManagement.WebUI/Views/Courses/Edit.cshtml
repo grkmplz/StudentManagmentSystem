@@ -1,0 +1,85 @@
+﻿@model UpdateCourseViewModel
+
+@{
+    ViewData["Title"] = "Edit Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var teacherList = ViewBag.Teachers as List<StudentCoursesManagement.Domain.Entities.Teacher>;
+    var departmentList = ViewBag.Departments as List<StudentCoursesManagement.Domain.Entities.Department>;
+}
+
+<div class="p-6 space-y-8">
+    <h1 class="text-3xl font-bold text-white mb-4">Edit Course</h1>
+    <div class="bg-gray-800 shadow-md rounded-lg p-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-red-500 text-sm mb-4"></div>
+            <input type="hidden" asp-for="CourseId"/>
+
+            <div class="mb-4">
+                <label for="Title" class="text-gray-300">Title</label>
+                <input asp-for="Title" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4"/>
+                <span asp-validation-for="Title" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="mb-4">
+                <label for="Description" class="text-gray-300">Description</label>
+                <textarea asp-for="Description" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4"></textarea>
+                <span asp-validation-for="Description" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="mb-4">
+                <label for="StartDate" class="text-gray-300">Start Date</label>
+                <input asp-for="StartDate" type="datetime-local" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4"/>
+                <span asp-validation-for="StartDate" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="mb-4">
+                <label for="EndDate" class="text-gray-300">End Date</label>
+                <input asp-for="EndDate" type="datetime-local" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4"/>
+                <span asp-validation-for="EndDate" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="mb-4">
+                <label for="IsActive" class="text-gray-300">Is Active?</label>
+                <input asp-for="IsActive" type="checkbox"/>
+            </div>
+            <div class="mb-4">
+                <label class="text-gray-300" for="TeacherId">Teacher</label>
+                <select asp-for="TeacherId" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4">
+                    <option value="">-- Select Teacher --</option>
+                    @if (teacherList != null)
+                    {
+                        @foreach (var t in teacherList)
+                        {
+                            <option value="@t.TeacherId" selected="@(Model.TeacherId == t.TeacherId)">
+                                @t.FirstName @t.LastName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="text-gray-300" for="DepartmentId">Department</label>
+                <select asp-for="DepartmentId" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4">
+                    <option value="">-- Select Department --</option>
+                    @if (departmentList != null)
+                    {
+                        foreach (var d in departmentList)
+                        {
+                            <option value="@d.DepartmentId" selected="@(Model.DepartmentId == d.DepartmentId)">
+                                @d.DepartmentName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <a href="@Url.Action("Index", "Courses")"
+                   class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Previous Page
+                </a>
+                <button type="submit"
+                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                    ✓ Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

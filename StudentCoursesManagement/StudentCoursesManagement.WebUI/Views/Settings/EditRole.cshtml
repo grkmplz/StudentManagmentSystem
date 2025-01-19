@@ -1,0 +1,42 @@
+﻿@model StudentCoursesManagement.Application.ViewModels.SettingsViewModel.EditRoleViewModel
+@{
+    ViewData["Title"] = "Edit Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="p-6 space-y-8">
+    <div class="container mt-5 mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold text-white">Role Management</h2>
+        </div>
+        <hr class="border-gray-600 my-4"/>
+        <div class="bg-gray-800 shadow-md rounded-lg p-6">
+            <h1 class="text-3xl font-bold text-white mb-6">Edit Role</h1>
+
+            <form asp-action="EditRole" method="post">
+                <input type="hidden" name="RoleId" value="@Model.RoleId"/>
+                <input type="hidden" name="RoleName" value="@Model.RoleName"/>
+
+                <div class="mb-4">
+                    <h3 class="text-lg text-white mb-4">Users</h3>
+                    <ul>
+                        @for (int i = 0; i < Model.Users.Count; i++)
+                        {
+                                <li>
+                                    <input type="checkbox" name="Users[@i].IsSelected" value="true" @(Model.Users[i].IsSelected ? "checked" : "") />
+                                    <input type="hidden" name="Users[@i].UserId" value="@Model.Users[i].UserId" />
+                                    <input type="hidden" name="Users[@i].UserName" value="@Model.Users[i].UserName" />
+                                    <label class="text-white ml-2">@Model.Users[i].UserName</label>
+                                </li>
+                                                 
+                        }
+                    </ul>
+                </div>
+                @if (@Model.Users.Count > 0)
+                {
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-4"> ✓ Save Changes</button>
+                }
+               
+            </form>
+        </div>
+    </div>
+</div>

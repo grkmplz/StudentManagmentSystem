@@ -1,0 +1,36 @@
+﻿@model StudentCoursesManagement.Application.ViewModels.StudentViewModels.StudentDetailsViewModel
+
+@{
+    ViewData["Title"] = "Assignment Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mx-auto p/h1>x-4 py-8">
+    <div class="bg-gray-900 text-white rounded-lg shadow-lg p-6">
+        <h3 class="text-4xl font-extrabold mb-6">@Model.FirstName @Model.LastName</h3>
+
+        <div class="bg-gray-800 shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Registered Courses</h2>
+            <ul class="list-disc pl-6 space-y-4">
+                @if (Model.UserCourses != null && Model.UserCourses.Any())
+                {
+                    @foreach (var studentCourse in Model.UserCourses)
+                    {
+                        if (studentCourse.IsActive == true)
+                        {
+                            <li class="flex items-center justify-between p-3 bg-gray-700 rounded-md">
+                                <span class="font-medium">@studentCourse.CourseTitle</span>
+                                <span class="text-gray-400 text-sm">Start Date: @studentCourse.CourseStartDate.ToShortDateString(), End Date: @studentCourse.CourseEndDate.ToShortDateString()</span>
+                            </li>
+                        }
+
+                    }
+                }
+                else
+                {
+                    <li class="text-gray-500">There is no assigned course to this student.</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

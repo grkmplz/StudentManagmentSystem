@@ -1,0 +1,59 @@
+﻿@model CreateStudentViewModel
+@{
+    ViewData["Title"] = "Add Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="p-6 space-y-8">
+    <h2 class="text-3xl font-bold text-white mb-4">Add New Student</h2>
+    @if (!string.IsNullOrEmpty(ViewBag.EmailErrorMessage as string))
+    {
+        <div class="bg-red-600 text-white rounded-lg shadow-md p-4 mb-6">
+            <h5 class="text-lg font-semibold mb-2">Error</h5>
+            <p>@ViewBag.EmailErrorMessage</p>
+        </div>
+    }
+    <div class="bg-gray-800 shadow-md rounded-lg p-6">
+        <form asp-action="Create" asp-controller="Students" method="post">
+            <div class="mb-4">
+                <label for="FirstName" class="block text-gray-300 text-sm font-bold mb-2">Name</label>
+                <input asp-for="FirstName" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter name"/>
+                <span asp-validation-for="FirstName" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="mb-4">
+                <label for="LastName" class="block text-gray-300 text-sm font-bold mb-2">Surname</label>
+                <input asp-for="LastName" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter surname"/>
+                <span asp-validation-for="LastName" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="mb-4">
+                <label for="Email" class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                <input asp-for="Email" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter email"/>
+                <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
+            </div>
+
+
+            <div class="mb-4">
+                <label for="Password" class="block text-gray-300 text-sm font-bold mb-2">Password</label>
+                <input asp-for="Password" type="password" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter password"/>
+                <span asp-validation-for="Password" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="mb-4">
+                <label for="ConfirmPassword" class="block text-gray-300 text-sm font-bold mb-2">Password Again</label>
+                <input asp-for="ConfirmPassword" type="password" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter password again"/>
+                <span asp-validation-for="ConfirmPassword" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="mb-4">
+                <label for="EnrollmentDate" class="block text-gray-300 text-sm font-bold mb-2">Enrollment Date</label>
+<input asp-for="EnrollmentDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" class="bg-gray-700 text-white rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <span asp-validation-for="EnrollmentDate" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <a href="@Url.Action("Index", "Students")" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Previous Page</a>
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">✓ Save Student</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+.auth-container {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h3 {
+    font-size: 1.8rem;
+    color: #333333;
+}
+
+.text-muted {
+    font-size: 1rem;
+    color: #888888;
+}
+
+.form-control-lg {
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border: none;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+}
+
+.btn-primary:hover {
+    background-color: #004095;
+}
+
+/* Error Class for Validation */
+.error {
+    font-size: 0.875rem;
+    color: #e3342f;
+}

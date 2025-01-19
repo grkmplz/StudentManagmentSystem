@@ -1,0 +1,126 @@
+@using StudentCoursesManagement.Infrastructure.Config
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/panel.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+    <div class="flex h-screen overflow-hidden">
+        <nav class="admin-navbar border-r border-gray-800">
+            <div class="navbar-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrf1NlSOgfQJJlUSLZIO_gQQTx6y1di-ERtbsCXp7-AHgiONSSJ8Mv0aIB8LM0B3tr1cs&usqp=CAU" alt="Logo" class="navbar-logo">
+                <h1 class="navbar-title">Welcome</h1>
+            </div>
+            <ul class="navbar-menu">
+                @if (User.IsInRole(UserRoles.Admin))
+                {
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboards" ? "active" : "")">
+                        <a asp-controller="Dashboards" asp-action="Index">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "active" : "")">
+                        <a asp-controller="Courses" asp-action="Index">
+                            <i class="fas fa-book"></i>
+                            <span>Courses</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
+                        <a asp-controller="Students" asp-action="Index">
+                            <i class="fas fa-users"></i>
+                            <span>Students</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")">
+                        <a asp-controller="Settings" asp-action="Index">
+                            <i class="fas fa-cog"></i>
+                            <span>Roles</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Teachers" ? "active" : "")">
+                        <a asp-controller="Teachers" asp-action="Index">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Teachers</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Departments" ? "active" : "")">
+                        <a asp-controller="Departments" asp-action="Index">
+                            <i class="fas fa-building"></i>
+                            <span>Departments</span>
+                        </a>
+                    </li>
+
+                }
+                @if (User.IsInRole(UserRoles.Student))
+                {
+                    <li class="menu-item active">
+                        <a asp-controller="Students" asp-action="MyCourses">
+                            <i class="fas fa-book-open"></i>
+                            <span>My Courses</span>
+                        </a>
+                    </li>
+                    <li class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")">
+                        <a asp-controller="Students" asp-action="Settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-900">
+            <header class="bg-gray-800 p-4 flex justify-between items-center sticky top-0 z-10 shadow-md">
+                <h2 id="pageTitle" class="text-3xl font-bold">Student Management</h2>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Search" class="bg-gray-800 text-gray-200 text-sm rounded-md py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button id="notificationBtn" class="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-300">
+                        <i class="fas fa-bell text-xl"></i>
+                    </button>
+                    <div class="relative" id="profileMenuContainer">
+                        <button id="profileMenuBtn" class="flex items-center space-x-3 focus:outline-none">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrf1NlSOgfQJJlUSLZIO_gQQTx6y1di-ERtbsCXp7-AHgiONSSJ8Mv0aIB8LM0B3tr1cs&usqp=CAU" alt="Admin" class="rounded-full w-10 h-10">
+                            <div class="hidden md:block text-left">
+                                <p class="font-semibold">
+                                    @if (User.IsInRole(UserRoles.Admin))
+                                    {
+                                    <p>Admin</p>
+                                    }
+                                    else if (User.IsInRole(UserRoles.Student))
+                                    {
+                                    <p>Student</p>
+                                    }
+                                </p>
+                                <p class="text-sm text-gray-400">@User.Identity.Name</p>
+                            </div>
+                        </button>
+                        <div id="profileDropdown" class="dropdown-menu hidden">
+                            @if (User.IsInRole(UserRoles.Admin))
+                            {
+                                <a href="@Url.Action("Index", "Settings")" class="dropdown-item" data-page="settings">Settings</a>
+                            }
+                            <a href="@Url.Action("Logout", "Auth")" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/jsT/panel.js"></script>
+
+</body>
+</html>

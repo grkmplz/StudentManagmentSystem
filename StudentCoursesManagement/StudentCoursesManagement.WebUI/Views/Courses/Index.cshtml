@@ -1,0 +1,112 @@
+﻿@model IEnumerable<CourseViewModel>
+@{
+    ViewData["Title"] = "Course List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="p-6 space-y-8">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-white">Course List</h2>
+        @if (Model.Count() > 0)
+        {
+            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Create", "Courses")">+ Add Course</a>
+        }       
+    </div>
+
+    <hr class="border-gray-600 my-4" />
+
+    @if (Model.Count() <= 0)
+    {
+        <div class="rounded-lg p-6 flex justify-center items-center mt-12">
+            <div class="text-center">
+                <p class="mb-4 text-white">There is nothing. Do you wanna add something ? </p>
+                <img src="~/images/data_not_found_2.png" alt="Page Not Found" style="max-height:500px; max-width:500px;" />
+                 <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Create", "Courses")">+ Add Course</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="bg-gray-800 shadow-md rounded-lg p-6">
+            <table class="min-w-full table-auto">
+                <thead>
+                    <tr>
+                        <th class="py-3 px-4 text-left">Course ID</th>
+                        <th class="py-3 px-4 text-left">Title</th>
+                        <th class="py-3 px-4 text-left">Description</th>
+                        <th class="py-3 px-4 text-left">Teacher</th>
+                        <th class="py-3 px-4 text-left">Department</th>
+                        <th class="py-3 px-4 text-left">Start Date </th>
+                        <th class="py-3 px-4 text-left">End Date</th>
+                        <th class="py-3 px-4 text-left">State</th>
+                        <th class="py-3 px-4 text-left">Created At</th>
+                        <th class="py-3 px-4 text-left">Modified At</th>
+                        <th class="py-3 px-6 text-center" style="width: 200px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model.Where(x => x.IsActive))
+                    {
+                        <tr class="border-t border-gray-700">
+                            <td class="py-3 px-4">@course.CourseId</td>
+                            <td class="py-3 px-4">@course.Title</td>
+                            <td class="py-3 px-4">@course.Description</td>
+                            <td class="py-3 px-4">@(course.TeacherName ?? "—")</td>
+                            <td class="py-3 px-4">@(course.DepartmentName ?? "—")</td>
+                            <td class="py-3 px-4">@course.StartDate.ToShortDateString()</td>
+                            <td class="py-3 px-4">@course.EndDate.ToShortDateString()</td>
+                            <td class="py-3 px-4">
+                                @if (course.IsActive)
+                                {
+                                    <i class="fas fa-check-circle text-green-600" title="Aktif"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-times-circle text-red-600" title="Pasif"></i>
+                                }
+                            </td>
+                            <td class="py-3 px-4">@course.CreatedAt.ToShortDateString()</td>
+                            <td class="py-3 px-4">@course.ModifiedAt?.ToShortDateString()</td>
+                            <td class="py-3 px-4">
+                                <a class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Edit", "Courses", new { id = course.CourseId })">Edit</a>
+                                <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Delete", "Courses", new { id = course.CourseId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (Model.Where(x => x.IsActive).Count() != 0 || Model.Where(x => !x.IsActive).Count() != 0)
+                    {
+                        <tr><td colspan="12"><hr class="border-gray-600 my-4" /></td></tr>
+                    }
+
+                    @foreach (var course in Model.Where(x => !x.IsActive))
+                    {
+                        <tr class="border-t border-gray-700">
+                            <td class="py-3 px-4">@course.CourseId</td>
+                            <td class="py-3 px-4">@course.Title</td>
+                            <td class="py-3 px-4">@course.Description</td>
+                            <td class="py-3 px-4">@course.StartDate.ToShortDateString()</td>
+                            <td class="py-3 px-4">@course.EndDate.ToShortDateString()</td>
+                            <td class="py-3 px-4">
+                                @if (course.IsActive)
+                                {
+                                    <i class="fas fa-check-circle text-green-600" title="Active"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-times-circle text-red-600" title="Passive"></i>
+                                }
+                            </td>
+                            <td class="py-3 px-4">@course.CreatedAt.ToShortDateString()</td>
+                            <td class="py-3 px-4">@course.ModifiedAt?.ToShortDateString()</td>
+                            <td class="py-3 px-4">
+                                <a class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Edit", "Courses", new { id = course.CourseId })">Edit</a>
+                                <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" href="@Url.Action("Delete", "Courses", new { id = course.CourseId })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+   
+</div>
